@@ -144,7 +144,9 @@ function Test-UserIsSiteCollectionAdmin {
     #>
     param (
         [Parameter(Mandatory = $true)]
-        [string] $UserEmail
+        [string] $UserEmail,
+        [Parameter(Mandatory = $false)]
+        [array] $GraphGroups
     )
 
     $siteAdmins = Get-PnPSiteCollectionAdmin
@@ -156,8 +158,10 @@ function Test-UserIsSiteCollectionAdmin {
         }
 
         # Check if user is a member of a group that is a site collection admin
-        if ($userGroupMembership.GroupId -contains $siteAdminLogin) {
-            return $true
+        if ($null -ne $GraphGroups) {
+            if ($userGroupMembership.GroupId -contains $siteAdminLogin) {
+                return $true
+            }
         }
     }
 
@@ -172,7 +176,7 @@ function Get-UserSharePointGroups {
     param (
         [Parameter(Mandatory = $true)]
         [string] $UserEmail,
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $false)]
         [array] $GraphGroups
     )
 
@@ -205,24 +209,26 @@ function Get-UserSharePointGroups {
                 }
 
             }
-            elseif ($userGroupMembership.GroupId -contains $groupMemberLogin) {
-                $groupPermissionLevel = Get-PnPGroupPermissions -Identity $siteGroup
-                $permissionLevelString = ""
-                foreach ($permissionLevel in $groupPermissionLevel) {
-                    $permissionLevelString += $permissionLevel.Name + " | "
-                }
+            elseif ($null -ne $GraphGroups) {
+                if ($userGroupMembership.GroupId -contains $groupMemberLogin) {
+                    $groupPermissionLevel = Get-PnPGroupPermissions -Identity $siteGroup
+                    $permissionLevelString = ""
+                    foreach ($permissionLevel in $groupPermissionLevel) {
+                        $permissionLevelString += $permissionLevel.Name + " | "
+                    }
 
-                if ($permissionLevelString -eq "") {
-                    $permissionLevelString = "No Permissions"
-                }
-                else {
-                    # remove trailing " | "
-                    $permissionLevelString = $permissionLevelString.Substring(0, $permissionLevelString.Length - 3)
-                }
+                    if ($permissionLevelString -eq "") {
+                        $permissionLevelString = "No Permissions"
+                    }
+                    else {
+                        # remove trailing " | "
+                        $permissionLevelString = $permissionLevelString.Substring(0, $permissionLevelString.Length - 3)
+                    }
 
-                $groupMembership += [PSCustomObject]@{
-                    GroupName       = $siteGroup.Title
-                    PermissionLevel = $permissionLevelString
+                    $groupMembership += [PSCustomObject]@{
+                        GroupName       = $siteGroup.Title
+                        PermissionLevel = $permissionLevelString
+                    }
                 }
             }
         }
@@ -239,7 +245,7 @@ function Get-UniqueListPermissions {
     param (
         [Parameter(Mandatory = $true)]
         [string] $UserEmail,
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $false)]
         [array] $GraphGroups
     )
 
@@ -284,13 +290,15 @@ function Get-UniqueListPermissions {
 
                     $siteListPermissions += $listPermission
                 }
-                elseif ($GraphGroups.GroupId -contains ($roleassignment.Member.LoginName.Split('|')[2])) {
-                    $listPermission = [PSCustomObject]@{
-                        Name            = $list.Title
-                        PermissionLevel = $roleassignment.RoleDefinitionBindings.Name
-                    }
+                elseif ($null -ne $GraphGroups) {
+                    if ( $GraphGroups.GroupId -contains ($roleassignment.Member.LoginName.Split('|')[2])) {
+                        $listPermission = [PSCustomObject]@{
+                            Name            = $list.Title
+                            PermissionLevel = $roleassignment.RoleDefinitionBindings.Name
+                        }
 
-                    $siteListPermissions += $listPermission
+                        $siteListPermissions += $listPermission
+                    }
                 }
             }
         }

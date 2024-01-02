@@ -12,15 +12,15 @@ It is well known that SharePoint permissions are notoriously difficult to manage
 
 The script will output a CSV file with the following columns:
 
-| Column Name       | Description                                                                                         |
-| ----------------- | --------------------------------------------------------------------------------------------------- |
-| UserPrincipalName | The user's UPN/email address                                                                        |
-| SiteUrl           | The URL of the site                                                                                 |
-| SiteAdmin         | Is the user a site admin?                                                                           |
-| GroupName         | If the user is not a site admin, what SharePoint group are they in?                                 |
-| PermissionLevel   | The permission level granted to the SharePoint group, e.g full control, read, edit etc.             |
-| ListName          | The title of a list or library where the user has unique permissions. (also captures sharing links) |
-| ListPermission    | The permission level granted to the user on the list or library.                                    |
+| Column Name       | Description                                                                                       |
+| ----------------- | ------------------------------------------------------------------------------------------------- |
+| UserPrincipalName | The user's UPN/email address                                                                      |
+| SiteUrl           | The URL of the site                                                                               |
+| SiteAdmin         | Is the user a site admin?                                                                         |
+| GroupName         | If the user is not a site admin, what SharePoint group are they in? (also captures sharing links) |
+| PermissionLevel   | The permission level granted to the SharePoint group, e.g full control, read, edit etc.           |
+| ListName          | The title of a list or library where the user has unique permissions.                             |
+| ListPermission    | The permission level granted to the user on the list or library.                                  |
 
 ## 🚀 Getting Started
 

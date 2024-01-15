@@ -59,7 +59,7 @@ Below is an example of how you might call the script.
 $tenantName = "contoso" # The name of your tenant, e.g. contoso.sharepoint.com
 $csvPath = "C:\temp\permissions.csv" # The path to the output CSV file
 $clientID = "00000000-0000-0000-0000-000000000000" # The client ID of the app registration
-$certificatePath = "C:\temp\certificate.pfx" # The path to the certificate filer
+$certificatePath = "C:\temp\certificate.pfx" # The path to the certificate file
 $append = $true # Should the script append to the CSV file or overwrite it?
 
 $users = @(

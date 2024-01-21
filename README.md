@@ -68,7 +68,7 @@ $users = @(
 )
 
 foreach ($user in $users) {
-    .\Get-SharePointOnlinePermissions.ps1 -TenantName $tenantName -CsvPath $csvPath -ClientID $clientID -CertificatePath $certificatePath -Append $append -UserEmail $user
+    .\Get-SharePointOnlinePermissions.ps1 -TenantName $tenantName -CsvPath $csvPath -ClientID $clientID -CertificatePath $certificatePath -Append:$append -UserEmail $user
 }
 
 ```

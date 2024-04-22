@@ -46,7 +46,8 @@ Follow the steps in [this article](https://docs.microsoft.com/en-us/sharepoint/d
 
 **SharePoint API**
 
--   Sites.Read.All
+-   Sites.FullControl.All
+-   User.Read.All
 
 ## Usage
 

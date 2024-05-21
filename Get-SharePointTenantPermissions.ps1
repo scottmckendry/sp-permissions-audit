@@ -74,9 +74,10 @@ function Get-UserGroupMembership {
     )
 
     $accessToken = Get-GraphToken
+    $encodedUserEmail = [System.Web.HttpUtility]::UrlEncode($UserEmail)
 
     try {
-        $groupMemberShipResponse = Invoke-WebRequest -Uri "https://graph.microsoft.com/v1.0/users/$UserEmail/memberOf" -Method GET -Headers @{
+        $groupMemberShipResponse = Invoke-WebRequest -Uri "https://graph.microsoft.com/v1.0/users/$encodedUserEmail/memberOf" -Method GET -Headers @{
             Authorization = "Bearer $($accessToken.AccessToken)"
         } | ConvertFrom-Json
 
@@ -384,4 +385,3 @@ foreach ($siteCollection in $siteCollections) {
     # Reset user ID - Prevents false positives and extra work being done on sites the user has never visited
     Disconnect-PnPOnline
 }
-
